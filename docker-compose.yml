@@ -1,0 +1,63 @@
+version: "3.1"
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+  db:
+    image: postgres
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+  bff:
+    container_name: bff
+    image: bff
+    
+    command: 
+      - "/app/wait-for-it.sh"
+      - "db:5432"
+      - "storage_1:8000"
+      - "storage_2:8000"
+      - "--"
+      - "/app/myapp"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - storage_1
+      - storage_2
+    networks:
+      - backend_network
+    environment:
+      - STORAGES=2
+
+  storage_1:
+    container_name: storage_1
+    volumes:
+      - ./data/data1:/data
+    image: storage
+    networks:
+      - backend_network
+
+  storage_2:
+    container_name: storage_2
+    volumes:
+      - ./data/data2:/data
+    image: storage
+    networks:
+      - backend_network
+

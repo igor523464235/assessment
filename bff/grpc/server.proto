@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+option go_package = "github.com/igor-pgmt/str/grpc";
+
+package proto;
+
+service BFFService {
+  rpc Upload(stream Upload.Request) returns (Upload.Response) {}
+  rpc Download(Download.Request) returns (stream Download.Response) {}
+  rpc Delete(Delete.Request) returns (Delete.Response) {}
+}
+
+enum BFFError {
+  BFF_ERROR_UNKNOWN = 0;
+  BFF_ERROR_BAD_DATA = 1;
+}
+
+message Error {
+  BFFError error = 1;
+  string error_message = 2;
+}
+
+message FileMetadata {
+  string name = 1;
+  uint64 size = 2;
+}
+
+message FileChunk { bytes content = 1; }
+
+message Upload {
+  message Request {
+    oneof data {
+      FileMetadata metadata = 1;
+      FileChunk chunk = 2;
+    }
+  }
+
+  message Success { string id = 1; }
+
+  message Response {
+    oneof response {
+      Success success = 1;
+      Error error = 2;
+    }
+  }
+}
+
+message Download {
+  message Request { string id = 1; }
+
+  message Success {
+    oneof data {
+      FileMetadata metadata = 1;
+      FileChunk chunk = 2;
+    }
+  }
+
+  message Response {
+    oneof response {
+      Success success = 1;
+      Error error = 2;
+    }
+  }
+}
+
+message Delete {
+  message Request { string id = 1; }
+
+  message Success {}
+
+  message Response {
+    oneof response {
+      Success success = 1;
+      Error error = 2;
+    }
+  }
+}
