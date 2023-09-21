@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -20,12 +19,14 @@ func main() {
 	fileName := "picture.jpg"
 	fileNameResult := "result_file.jpg"
 
+	// Open the file to send
 	file, err := os.Open(fileName)
 	if err != nil {
 		logger.Fatalf("open file: %v", err)
 	}
 	defer file.Close()
 
+	// Get sha246 hash
 	hasher1 := sha256.New()
 	if _, err := io.Copy(hasher1, file); err != nil {
 		logger.Fatalf("failed to copy file to hasher: %s", err)
@@ -33,10 +34,8 @@ func main() {
 
 	hash1 := hasher1.Sum(nil)
 
-	fileStat, err := file.Stat()
-	if err != nil {
-		logger.Fatalf("get file stat: %v", err)
-	}
+	// Return the pointer to the beginning of the file
+	file.Seek(0, 0)
 
 	// Create connection to bff server
 	conn, err := grpc.Dial("localhost:8000", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
@@ -54,6 +53,12 @@ func main() {
 		logger.Fatalf("upload file: %v", err)
 	}
 
+	// Get file stats to get it's size
+	fileStat, err := file.Stat()
+	if err != nil {
+		logger.Fatalf("get file stat: %v", err)
+	}
+
 	// Send metadata as the first message
 	if err := stream.Send(&bffgrpc.Upload_Request{
 		Data: &bffgrpc.Upload_Request_Metadata{
@@ -67,11 +72,16 @@ func main() {
 	}
 
 	// Reading file and sending it's parts
-	buffer := make([]byte, 10)
+	buffer := make([]byte, 1024)
+	length1 := 0
 	for {
 		n, err := file.Read(buffer)
 		if err == io.EOF {
 			break
+		}
+		length1 += 1024
+		if length1%(1024*1024) == 0 {
+			logger.Printf("Uploaded: %d MB\n", length1/(1024*1024))
 		}
 		if err != nil {
 			logger.Fatalf("read file: %v", err)
@@ -102,19 +112,22 @@ func main() {
 		logger.Fatalf("download stream: %v", err)
 	}
 
+	// Create resulting file
 	resultFile, err := os.Create(fileNameResult)
 	if err != nil {
 		logger.Fatalf("create resulting file: %v", err)
 	}
 	defer resultFile.Close()
 
+	// Get first message as metadata
 	resd, err := streamd.Recv()
 	if err != nil {
 		logger.Fatalf("get first message with metadata: %v", err)
 	}
-	fmt.Println(resd.GetSuccess().GetMetadata())
+	logger.Println(resd.GetSuccess().GetMetadata())
 
 	// Writing content to created resulting file
+	length2 := 0
 	for {
 		resd, err := streamd.Recv()
 		if err == io.EOF {
@@ -124,11 +137,19 @@ func main() {
 			logger.Fatalf("get chunk message: %v", err)
 		}
 
-		_, err = resultFile.Write(resd.GetSuccess().GetChunk().GetContent())
+		chunk := resd.GetSuccess().GetChunk().GetContent()
+		length2 += len(chunk)
+		if length2%(1024*1024) == 0 {
+			logger.Printf("---------------downloaded: %d B, %d MB\n", length2, length2/(1024*1024))
+		}
+
+		_, err = resultFile.Write(chunk)
 		if err != nil {
 			logger.Fatalf("write chunk to file: %v", err)
 		}
 	}
+
+	// os.Exit(1)
 
 	// Open saved file
 	savedFile, err := os.Open(fileNameResult)
@@ -143,11 +164,11 @@ func main() {
 		logger.Fatalf("failed to copy file2 to hasher: %s", err)
 	}
 
-	hash2 := hasher1.Sum(nil)
+	hash2 := hasher2.Sum(nil)
 
 	// Check hashes
 	if !bytes.Equal(hash1, hash2) {
-		logger.Printf("original file: %x\nresulting file:%x\n", hash1, hash2)
+		logger.Fatalf("\noriginal file: %x\nresulting file:%x\n", hash1, hash2)
 	}
 
 	logger.Println("test successful")

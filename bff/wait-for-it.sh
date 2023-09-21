@@ -1,9 +1,6 @@
 #!/bin/bash
-# wait-for-it.sh
 
 set -e
-
-echo "YES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
 hosts=("$@")
 cmd="${hosts[-1]}"

@@ -35,7 +35,6 @@ services:
   bff:
     container_name: bff
     image: bff
-    
     command: 
       - "/app/wait-for-it.sh"
       - "db:5432"
@@ -54,7 +53,6 @@ endef
 
 export MIDDLE_OF_FILE
 
-
 define END_OF_FILE
     networks:
       - backend_network
@@ -66,11 +64,11 @@ endef
 export END_OF_FILE
 
 define STORAGE_DESCR
-  storage_NUM:
-    container_name: storage_NUM
+  chunk_storage_NUM:
+    container_name: chunk_storage_NUM
     volumes:
       - ./data/dataNUM:/data
-    image: storage
+    image: chunk_storage
     networks:
       - backend_network
 
@@ -82,13 +80,13 @@ build-docker-compose:
 	echo "$${BEGINNING_OF_FILE}" > $(DOCKER_COMPOSE_FILE); \
 
 	@for i in $(shell seq 1 $(STORAGES)); do \
-		echo "      - \"storage_NUM:8000\"" | sed "s/NUM/$$i/g" >> $(DOCKER_COMPOSE_FILE); \
+		echo "      - \"chunk_storage_NUM:8000\"" | sed "s/NUM/$$i/g" >> $(DOCKER_COMPOSE_FILE); \
 	done
 
 	echo "$${MIDDLE_OF_FILE}" >> $(DOCKER_COMPOSE_FILE); \
 
 	@for i in $(shell seq 1 $(STORAGES)); do \
-		echo "      - storage_NUM" | sed "s/NUM/$$i/g" >> $(DOCKER_COMPOSE_FILE); \
+		echo "      - chunk_storage_NUM" | sed "s/NUM/$$i/g" >> $(DOCKER_COMPOSE_FILE); \
 	done
 
 	echo "$${END_OF_FILE}" | sed "s/NUM/$$STORAGES/g" >> $(DOCKER_COMPOSE_FILE); \
@@ -100,7 +98,7 @@ build-docker-compose:
 
 build-start: build-docker-compose
 	docker build -t bff -f bff/Dockerfile .
-	docker build -t storage -f storage/Dockerfile .
+	docker build -t chunk_storage -f chunk_storage/Dockerfile .
 	docker-compose up --build
 
 clean:

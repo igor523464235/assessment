@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+option go_package = "github.com/igor-pgmt/str/grpc";
+
+package proto;
+
+service StorageService {
+  rpc Save(stream Save.Request) returns (Save.Response) {}
+  rpc Get(Get.Request) returns (stream Get.Response) {}
+  rpc Erase(Erase.Request) returns (Erase.Response) {}
+  rpc GetFreeSpace(GetFreeSpace.Request) returns (GetFreeSpace.Response) {}
+}
+
+message ChunkMetadata {
+  string id = 1;
+  uint32 part = 2;
+}
+
+message Chunk { bytes content = 1; }
+
+message Save {
+  message Request {
+    oneof data {
+      ChunkMetadata chunkMetadata = 1;
+      Chunk chunk = 2;
+    }
+  }
+
+  message Success {}
+
+  message Response {
+    oneof response {
+      Success success = 1;
+      string error = 2;
+    }
+  }
+}
+
+message Get {
+  message Request {
+    string id = 1;
+    uint32 part = 2;
+  }
+
+  message Success { Chunk chunk = 1; }
+
+  message Response {
+    oneof response {
+      Success success = 1;
+      string error = 2;
+    }
+  }
+}
+
+message Erase {
+  message Request {
+    string id = 1;
+    uint32 part = 2;
+  }
+
+  message Success {}
+
+  message Response {
+    oneof response {
+      Success success = 1;
+      string error = 2;
+    }
+  }
+}
+
+message GetFreeSpace {
+  message Request {}
+
+  message Success { uint64 bytes = 1; }
+
+  message Response {
+    oneof response {
+      Success success = 1;
+      string error = 2;
+    }
+  }
+}

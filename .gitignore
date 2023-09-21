@@ -1,3 +1,4 @@
 .vscode/
 data/
 test/result_file.jpg
+docker-compose.yml

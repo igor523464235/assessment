@@ -16,12 +16,12 @@ import (
 	_ "github.com/lib/pq"
 
 	proto "str/bff/grpc"
-	"str/bff/internal/server"
-	connectionpool "str/bff/internal/server/connection_pool"
-	"str/bff/internal/server/postgres"
-	service "str/bff/internal/server/service"
-	bffgrpc "str/bff/internal/server/transport/grpc"
-	csgrpc "str/storage/grpc"
+	connectionpool "str/bff/internal/connection_pool"
+	"str/bff/internal/entity"
+	serviceimp "str/bff/internal/service/imp"
+	"str/bff/internal/storage/postgres"
+	bffgrpc "str/bff/internal/transport/grpc"
+	csgrpc "str/chunk_storage/grpc"
 )
 
 func main() {
@@ -38,6 +38,7 @@ func main() {
 		logger.Fatalf("amount of storages must be greather than 0.")
 	}
 
+	logger.Println("storages: ", storages)
 	// Creating connection to db
 	// TODO: move credentials to envs
 	dbconn, err := sql.Open("postgres",
@@ -67,11 +68,12 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	// Creating pool with grpc connections to file storages
+	// Creating pool with grpc connections to chunk storages
 	connectionPool := connectionpool.New()
 
+	// TODO: move address and port to envs
 	for storageNum := 1; storageNum <= storages; storageNum++ {
-		grpconn, err := grpc.Dial(fmt.Sprintf("storage_%d:8000", storageNum),
+		grpconn, err := grpc.Dial(fmt.Sprintf("chunk_storage_%d:8000", storageNum),
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithBlock(),
 		)
@@ -81,14 +83,14 @@ func main() {
 		defer grpconn.Close()
 
 		connectionPool.AddConnection(&connectionpool.Connection{
-			ID:                   server.ConnectionID(storageNum),
+			ID:                   entity.ConnectionID(storageNum),
 			FreeSpace:            0,
 			StorageServiceClient: csgrpc.NewStorageServiceClient(grpconn),
 		})
 	}
 
 	// Creating main service with db service and connection pool
-	service, err := service.New(db, connectionPool, logger)
+	service, err := serviceimp.New(db, connectionPool, logger)
 	if err != nil {
 		logger.Fatal(err)
 	}

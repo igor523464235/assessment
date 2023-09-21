@@ -26,38 +26,77 @@ services:
   bff:
     container_name: bff
     image: bff
-    
     command: 
       - "/app/wait-for-it.sh"
       - "db:5432"
-      - "storage_1:8000"
-      - "storage_2:8000"
+      - "chunk_storage_1:8000"
+      - "chunk_storage_2:8000"
+      - "chunk_storage_3:8000"
+      - "chunk_storage_4:8000"
+      - "chunk_storage_5:8000"
+      - "chunk_storage_6:8000"
       - "--"
       - "/app/myapp"
     ports:
       - "8000:8000"
     depends_on:
       - db
-      - storage_1
-      - storage_2
+      - chunk_storage_1
+      - chunk_storage_2
+      - chunk_storage_3
+      - chunk_storage_4
+      - chunk_storage_5
+      - chunk_storage_6
     networks:
       - backend_network
     environment:
-      - STORAGES=2
+      - STORAGES=6
 
-  storage_1:
-    container_name: storage_1
+  chunk_storage_1:
+    container_name: chunk_storage_1
     volumes:
       - ./data/data1:/data
-    image: storage
+    image: chunk_storage
     networks:
       - backend_network
 
-  storage_2:
-    container_name: storage_2
+  chunk_storage_2:
+    container_name: chunk_storage_2
     volumes:
       - ./data/data2:/data
-    image: storage
+    image: chunk_storage
+    networks:
+      - backend_network
+
+  chunk_storage_3:
+    container_name: chunk_storage_3
+    volumes:
+      - ./data/data3:/data
+    image: chunk_storage
+    networks:
+      - backend_network
+
+  chunk_storage_4:
+    container_name: chunk_storage_4
+    volumes:
+      - ./data/data4:/data
+    image: chunk_storage
+    networks:
+      - backend_network
+
+  chunk_storage_5:
+    container_name: chunk_storage_5
+    volumes:
+      - ./data/data5:/data
+    image: chunk_storage
+    networks:
+      - backend_network
+
+  chunk_storage_6:
+    container_name: chunk_storage_6
+    volumes:
+      - ./data/data6:/data
+    image: chunk_storage
     networks:
       - backend_network
 

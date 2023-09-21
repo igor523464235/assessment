@@ -8,7 +8,7 @@ To build&run applications, use:
 ```bash
 make build-run
 ```
-By default, 1 instance of the BFF application, one database, and 6 instances of the storage will be launched.
+By default, 1 instance of the BFF application, 1 database, and 6 instances of the storage will be launched.
 
 You can specify amount of storages:
 ```bash
@@ -16,7 +16,7 @@ make build-run STORAGES=3
 ```
 
 ## How to test
-Testing module written as golang application that uploads picture test/picture.jpg, then downloads it and compares hashes of the original and downloaded file.
+Testing module written as golang application that uploads picture picture.jpg, then downloads it and compares hashes of the original file and downloaded file.
 You need to run applications (see at the previous step), then: 
 
 ```bash
