@@ -140,7 +140,7 @@ func main() {
 		chunk := resd.GetSuccess().GetChunk().GetContent()
 		length2 += len(chunk)
 		if length2%(1024*1024) == 0 {
-			logger.Printf("---------------downloaded: %d B, %d MB\n", length2, length2/(1024*1024))
+			logger.Printf("Downloaded: %d B, %d MB\n", length2, length2/(1024*1024))
 		}
 
 		_, err = resultFile.Write(chunk)
@@ -148,8 +148,6 @@ func main() {
 			logger.Fatalf("write chunk to file: %v", err)
 		}
 	}
-
-	// os.Exit(1)
 
 	// Open saved file
 	savedFile, err := os.Open(fileNameResult)
@@ -168,7 +166,7 @@ func main() {
 
 	// Check hashes
 	if !bytes.Equal(hash1, hash2) {
-		logger.Fatalf("\noriginal file: %x\nresulting file:%x\n", hash1, hash2)
+		logger.Fatalf("\ntest failed:\noriginal file: %x\nresulting file:%x\n", hash1, hash2)
 	}
 
 	logger.Println("test successful")

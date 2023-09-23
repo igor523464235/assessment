@@ -2,6 +2,7 @@ package fs
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/google/uuid"
@@ -47,24 +48,30 @@ func (fs *ChunkStorage) Get(chunkID uuid.UUID, part uint8) (<-chan []byte, <-cha
 	content := make(chan []byte)
 	errorChan := make(chan error)
 
-	// TODO: (important) make stream reading file, not full in memory
 	go func() {
 		defer close(content)
 		defer close(errorChan)
 
-		b, err := os.ReadFile(fmt.Sprintf("%s/%s:%d", fs.directory, chunkID, part))
+		file, err := os.Open(fmt.Sprintf("%s/%s:%d", fs.directory, chunkID, part))
 		if err != nil {
-			errorChan <- errors.Wrapf(err, "read file from disk: %s", fmt.Sprintf("%s/%s:%d", fs.directory, chunkID, part))
+			errorChan <- err
 			return
 		}
+		defer file.Close()
 
-		for i := 0; i < len(b); i += 1024 {
-			end := i + 1024
-			if end > len(b) {
-				end = len(b)
+		// TODO: need to know optimal buffer size
+		for {
+			buffer := make([]byte, 1024)
+			n, err := file.Read(buffer)
+			if err != nil && err != io.EOF {
+				errorChan <- err
+				return
 			}
-			chunk := b[i:end]
-			content <- chunk
+			if n == 0 {
+				break
+			}
+
+			content <- buffer[:n]
 		}
 	}()
 
