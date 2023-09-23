@@ -7,6 +7,7 @@ package proto;
 service BFFService {
   rpc Upload(stream Upload.Request) returns (Upload.Response) {}
   rpc Download(Download.Request) returns (stream Download.Response) {}
+  rpc UpdateFreeSpaces(UpdateFreeSpaces.Request) returns (UpdateFreeSpaces.Response) {}
   rpc Delete(Delete.Request) returns (Delete.Response) {}
 }
 
@@ -70,6 +71,19 @@ message Delete {
 
   message Response {
     oneof response {
+      Success success = 1;
+      Error error = 2;
+    }
+  }
+}
+
+message UpdateFreeSpaces{
+  message Request{}
+
+  message Success {}
+
+  message Response{
+    oneof result {
       Success success = 1;
       Error error = 2;
     }

@@ -337,6 +337,44 @@ func (*Delete) Descriptor() ([]byte, []int) {
 	return file_server_proto_rawDescGZIP(), []int{5}
 }
 
+type UpdateFreeSpaces struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UpdateFreeSpaces) Reset() {
+	*x = UpdateFreeSpaces{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_server_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateFreeSpaces) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateFreeSpaces) ProtoMessage() {}
+
+func (x *UpdateFreeSpaces) ProtoReflect() protoreflect.Message {
+	mi := &file_server_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateFreeSpaces.ProtoReflect.Descriptor instead.
+func (*UpdateFreeSpaces) Descriptor() ([]byte, []int) {
+	return file_server_proto_rawDescGZIP(), []int{6}
+}
+
 type Upload_Request struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -351,7 +389,7 @@ type Upload_Request struct {
 func (x *Upload_Request) Reset() {
 	*x = Upload_Request{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[6]
+		mi := &file_server_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -364,7 +402,7 @@ func (x *Upload_Request) String() string {
 func (*Upload_Request) ProtoMessage() {}
 
 func (x *Upload_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[6]
+	mi := &file_server_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -428,7 +466,7 @@ type Upload_Success struct {
 func (x *Upload_Success) Reset() {
 	*x = Upload_Success{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[7]
+		mi := &file_server_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -441,7 +479,7 @@ func (x *Upload_Success) String() string {
 func (*Upload_Success) ProtoMessage() {}
 
 func (x *Upload_Success) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[7]
+	mi := &file_server_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -475,10 +513,15 @@ type Upload_Response struct {
 	Response isUpload_Response_Response `protobuf_oneof:"response"`
 }
 
+// Error implements error.
+func (*Upload_Response) Error() string {
+	panic("unimplemented")
+}
+
 func (x *Upload_Response) Reset() {
 	*x = Upload_Response{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[8]
+		mi := &file_server_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -491,7 +534,7 @@ func (x *Upload_Response) String() string {
 func (*Upload_Response) ProtoMessage() {}
 
 func (x *Upload_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[8]
+	mi := &file_server_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -555,7 +598,7 @@ type Download_Request struct {
 func (x *Download_Request) Reset() {
 	*x = Download_Request{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[9]
+		mi := &file_server_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -568,7 +611,7 @@ func (x *Download_Request) String() string {
 func (*Download_Request) ProtoMessage() {}
 
 func (x *Download_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[9]
+	mi := &file_server_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -605,7 +648,7 @@ type Download_Success struct {
 func (x *Download_Success) Reset() {
 	*x = Download_Success{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[10]
+		mi := &file_server_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -618,7 +661,7 @@ func (x *Download_Success) String() string {
 func (*Download_Success) ProtoMessage() {}
 
 func (x *Download_Success) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[10]
+	mi := &file_server_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -685,7 +728,7 @@ type Download_Response struct {
 func (x *Download_Response) Reset() {
 	*x = Download_Response{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[11]
+		mi := &file_server_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -698,7 +741,7 @@ func (x *Download_Response) String() string {
 func (*Download_Response) ProtoMessage() {}
 
 func (x *Download_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[11]
+	mi := &file_server_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -762,7 +805,7 @@ type Delete_Request struct {
 func (x *Delete_Request) Reset() {
 	*x = Delete_Request{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[12]
+		mi := &file_server_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -775,7 +818,7 @@ func (x *Delete_Request) String() string {
 func (*Delete_Request) ProtoMessage() {}
 
 func (x *Delete_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[12]
+	mi := &file_server_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -807,7 +850,7 @@ type Delete_Success struct {
 func (x *Delete_Success) Reset() {
 	*x = Delete_Success{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[13]
+		mi := &file_server_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -820,7 +863,7 @@ func (x *Delete_Success) String() string {
 func (*Delete_Success) ProtoMessage() {}
 
 func (x *Delete_Success) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[13]
+	mi := &file_server_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -850,7 +893,7 @@ type Delete_Response struct {
 func (x *Delete_Response) Reset() {
 	*x = Delete_Response{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_server_proto_msgTypes[14]
+		mi := &file_server_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -863,7 +906,7 @@ func (x *Delete_Response) String() string {
 func (*Delete_Response) ProtoMessage() {}
 
 func (x *Delete_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_server_proto_msgTypes[14]
+	mi := &file_server_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -915,6 +958,162 @@ type Delete_Response_Error struct {
 func (*Delete_Response_Success) isDelete_Response_Response() {}
 
 func (*Delete_Response_Error) isDelete_Response_Response() {}
+
+type UpdateFreeSpaces_Request struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UpdateFreeSpaces_Request) Reset() {
+	*x = UpdateFreeSpaces_Request{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_server_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateFreeSpaces_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateFreeSpaces_Request) ProtoMessage() {}
+
+func (x *UpdateFreeSpaces_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_server_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateFreeSpaces_Request.ProtoReflect.Descriptor instead.
+func (*UpdateFreeSpaces_Request) Descriptor() ([]byte, []int) {
+	return file_server_proto_rawDescGZIP(), []int{6, 0}
+}
+
+type UpdateFreeSpaces_Success struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UpdateFreeSpaces_Success) Reset() {
+	*x = UpdateFreeSpaces_Success{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_server_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateFreeSpaces_Success) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateFreeSpaces_Success) ProtoMessage() {}
+
+func (x *UpdateFreeSpaces_Success) ProtoReflect() protoreflect.Message {
+	mi := &file_server_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateFreeSpaces_Success.ProtoReflect.Descriptor instead.
+func (*UpdateFreeSpaces_Success) Descriptor() ([]byte, []int) {
+	return file_server_proto_rawDescGZIP(), []int{6, 1}
+}
+
+type UpdateFreeSpaces_Response struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Result:
+	//	*UpdateFreeSpaces_Response_Success
+	//	*UpdateFreeSpaces_Response_Error
+	Result isUpdateFreeSpaces_Response_Result `protobuf_oneof:"result"`
+}
+
+func (x *UpdateFreeSpaces_Response) Reset() {
+	*x = UpdateFreeSpaces_Response{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_server_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateFreeSpaces_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateFreeSpaces_Response) ProtoMessage() {}
+
+func (x *UpdateFreeSpaces_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_server_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateFreeSpaces_Response.ProtoReflect.Descriptor instead.
+func (*UpdateFreeSpaces_Response) Descriptor() ([]byte, []int) {
+	return file_server_proto_rawDescGZIP(), []int{6, 2}
+}
+
+func (m *UpdateFreeSpaces_Response) GetResult() isUpdateFreeSpaces_Response_Result {
+	if m != nil {
+		return m.Result
+	}
+	return nil
+}
+
+func (x *UpdateFreeSpaces_Response) GetSuccess() *UpdateFreeSpaces_Success {
+	if x, ok := x.GetResult().(*UpdateFreeSpaces_Response_Success); ok {
+		return x.Success
+	}
+	return nil
+}
+
+func (x *UpdateFreeSpaces_Response) GetError() *Error {
+	if x, ok := x.GetResult().(*UpdateFreeSpaces_Response_Error); ok {
+		return x.Error
+	}
+	return nil
+}
+
+type isUpdateFreeSpaces_Response_Result interface {
+	isUpdateFreeSpaces_Response_Result()
+}
+
+type UpdateFreeSpaces_Response_Success struct {
+	Success *UpdateFreeSpaces_Success `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
+}
+
+type UpdateFreeSpaces_Response_Error struct {
+	Error *Error `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*UpdateFreeSpaces_Response_Success) isUpdateFreeSpaces_Response_Result() {}
+
+func (*UpdateFreeSpaces_Response_Error) isUpdateFreeSpaces_Response_Result() {}
 
 var File_server_proto protoreflect.FileDescriptor
 
@@ -974,26 +1173,42 @@ var file_server_proto_rawDesc = []byte{
 	0x48, 0x00, 0x52, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x12, 0x24, 0x0a, 0x05, 0x65,
 	0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0c, 0x2e, 0x70, 0x72, 0x6f,
 	0x74, 0x6f, 0x2e, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x48, 0x00, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f,
-	0x72, 0x42, 0x0a, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2a, 0x39, 0x0a,
-	0x08, 0x42, 0x46, 0x46, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x12, 0x15, 0x0a, 0x11, 0x42, 0x46, 0x46,
-	0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00,
-	0x12, 0x16, 0x0a, 0x12, 0x42, 0x46, 0x46, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x5f, 0x42, 0x41,
-	0x44, 0x5f, 0x44, 0x41, 0x54, 0x41, 0x10, 0x01, 0x32, 0xc7, 0x01, 0x0a, 0x0a, 0x42, 0x46, 0x46,
-	0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3b, 0x0a, 0x06, 0x55, 0x70, 0x6c, 0x6f, 0x61,
-	0x64, 0x12, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64,
-	0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x28, 0x01, 0x12, 0x41, 0x0a, 0x08, 0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61, 0x64,
-	0x12, 0x17, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61,
-	0x64, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01, 0x12, 0x39, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65, 0x74,
-	0x65, 0x12, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
-	0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x42, 0x1f, 0x5a, 0x1d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x69, 0x67, 0x6f, 0x72, 0x2d, 0x70, 0x67, 0x6d, 0x74, 0x2f, 0x73, 0x74, 0x72, 0x2f, 0x67,
-	0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x42, 0x0a, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xa1, 0x01,
+	0x0a, 0x10, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x72, 0x65, 0x65, 0x53, 0x70, 0x61, 0x63,
+	0x65, 0x73, 0x1a, 0x09, 0x0a, 0x07, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x09, 0x0a,
+	0x07, 0x53, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x1a, 0x77, 0x0a, 0x08, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3b, 0x0a, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x46, 0x72, 0x65, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x73, 0x2e, 0x53,
+	0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x48, 0x00, 0x52, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73,
+	0x73, 0x12, 0x24, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x0c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x48, 0x00,
+	0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x42, 0x08, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c,
+	0x74, 0x2a, 0x39, 0x0a, 0x08, 0x42, 0x46, 0x46, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x12, 0x15, 0x0a,
+	0x11, 0x42, 0x46, 0x46, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f,
+	0x57, 0x4e, 0x10, 0x00, 0x12, 0x16, 0x0a, 0x12, 0x42, 0x46, 0x46, 0x5f, 0x45, 0x52, 0x52, 0x4f,
+	0x52, 0x5f, 0x42, 0x41, 0x44, 0x5f, 0x44, 0x41, 0x54, 0x41, 0x10, 0x01, 0x32, 0xa0, 0x02, 0x0a,
+	0x0a, 0x42, 0x46, 0x46, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3b, 0x0a, 0x06, 0x55,
+	0x70, 0x6c, 0x6f, 0x61, 0x64, 0x12, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70,
+	0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x28, 0x01, 0x12, 0x41, 0x0a, 0x08, 0x44, 0x6f, 0x77, 0x6e,
+	0x6c, 0x6f, 0x61, 0x64, 0x12, 0x17, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x6f, 0x77,
+	0x6e, 0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01, 0x12, 0x57, 0x0a, 0x10, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x72, 0x65, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x73, 0x12,
+	0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x72,
+	0x65, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x73, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x20, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46,
+	0x72, 0x65, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x73, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x00, 0x12, 0x39, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x15,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x2e, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42,
+	0x1f, 0x5a, 0x1d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x69, 0x67,
+	0x6f, 0x72, 0x2d, 0x70, 0x67, 0x6d, 0x74, 0x2f, 0x73, 0x74, 0x72, 0x2f, 0x67, 0x72, 0x70, 0x63,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1009,48 +1224,56 @@ func file_server_proto_rawDescGZIP() []byte {
 }
 
 var file_server_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_server_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_server_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_server_proto_goTypes = []interface{}{
-	(BFFError)(0),             // 0: proto.BFFError
-	(*Error)(nil),             // 1: proto.Error
-	(*FileMetadata)(nil),      // 2: proto.FileMetadata
-	(*FileChunk)(nil),         // 3: proto.FileChunk
-	(*Upload)(nil),            // 4: proto.Upload
-	(*Download)(nil),          // 5: proto.Download
-	(*Delete)(nil),            // 6: proto.Delete
-	(*Upload_Request)(nil),    // 7: proto.Upload.Request
-	(*Upload_Success)(nil),    // 8: proto.Upload.Success
-	(*Upload_Response)(nil),   // 9: proto.Upload.Response
-	(*Download_Request)(nil),  // 10: proto.Download.Request
-	(*Download_Success)(nil),  // 11: proto.Download.Success
-	(*Download_Response)(nil), // 12: proto.Download.Response
-	(*Delete_Request)(nil),    // 13: proto.Delete.Request
-	(*Delete_Success)(nil),    // 14: proto.Delete.Success
-	(*Delete_Response)(nil),   // 15: proto.Delete.Response
+	(BFFError)(0),                     // 0: proto.BFFError
+	(*Error)(nil),                     // 1: proto.Error
+	(*FileMetadata)(nil),              // 2: proto.FileMetadata
+	(*FileChunk)(nil),                 // 3: proto.FileChunk
+	(*Upload)(nil),                    // 4: proto.Upload
+	(*Download)(nil),                  // 5: proto.Download
+	(*Delete)(nil),                    // 6: proto.Delete
+	(*UpdateFreeSpaces)(nil),          // 7: proto.UpdateFreeSpaces
+	(*Upload_Request)(nil),            // 8: proto.Upload.Request
+	(*Upload_Success)(nil),            // 9: proto.Upload.Success
+	(*Upload_Response)(nil),           // 10: proto.Upload.Response
+	(*Download_Request)(nil),          // 11: proto.Download.Request
+	(*Download_Success)(nil),          // 12: proto.Download.Success
+	(*Download_Response)(nil),         // 13: proto.Download.Response
+	(*Delete_Request)(nil),            // 14: proto.Delete.Request
+	(*Delete_Success)(nil),            // 15: proto.Delete.Success
+	(*Delete_Response)(nil),           // 16: proto.Delete.Response
+	(*UpdateFreeSpaces_Request)(nil),  // 17: proto.UpdateFreeSpaces.Request
+	(*UpdateFreeSpaces_Success)(nil),  // 18: proto.UpdateFreeSpaces.Success
+	(*UpdateFreeSpaces_Response)(nil), // 19: proto.UpdateFreeSpaces.Response
 }
 var file_server_proto_depIdxs = []int32{
 	0,  // 0: proto.Error.error:type_name -> proto.BFFError
 	2,  // 1: proto.Upload.Request.metadata:type_name -> proto.FileMetadata
 	3,  // 2: proto.Upload.Request.chunk:type_name -> proto.FileChunk
-	8,  // 3: proto.Upload.Response.success:type_name -> proto.Upload.Success
+	9,  // 3: proto.Upload.Response.success:type_name -> proto.Upload.Success
 	1,  // 4: proto.Upload.Response.error:type_name -> proto.Error
 	2,  // 5: proto.Download.Success.metadata:type_name -> proto.FileMetadata
 	3,  // 6: proto.Download.Success.chunk:type_name -> proto.FileChunk
-	11, // 7: proto.Download.Response.success:type_name -> proto.Download.Success
+	12, // 7: proto.Download.Response.success:type_name -> proto.Download.Success
 	1,  // 8: proto.Download.Response.error:type_name -> proto.Error
-	14, // 9: proto.Delete.Response.success:type_name -> proto.Delete.Success
+	15, // 9: proto.Delete.Response.success:type_name -> proto.Delete.Success
 	1,  // 10: proto.Delete.Response.error:type_name -> proto.Error
-	7,  // 11: proto.BFFService.Upload:input_type -> proto.Upload.Request
-	10, // 12: proto.BFFService.Download:input_type -> proto.Download.Request
-	13, // 13: proto.BFFService.Delete:input_type -> proto.Delete.Request
-	9,  // 14: proto.BFFService.Upload:output_type -> proto.Upload.Response
-	12, // 15: proto.BFFService.Download:output_type -> proto.Download.Response
-	15, // 16: proto.BFFService.Delete:output_type -> proto.Delete.Response
-	14, // [14:17] is the sub-list for method output_type
-	11, // [11:14] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	18, // 11: proto.UpdateFreeSpaces.Response.success:type_name -> proto.UpdateFreeSpaces.Success
+	1,  // 12: proto.UpdateFreeSpaces.Response.error:type_name -> proto.Error
+	8,  // 13: proto.BFFService.Upload:input_type -> proto.Upload.Request
+	11, // 14: proto.BFFService.Download:input_type -> proto.Download.Request
+	17, // 15: proto.BFFService.UpdateFreeSpaces:input_type -> proto.UpdateFreeSpaces.Request
+	14, // 16: proto.BFFService.Delete:input_type -> proto.Delete.Request
+	10, // 17: proto.BFFService.Upload:output_type -> proto.Upload.Response
+	13, // 18: proto.BFFService.Download:output_type -> proto.Download.Response
+	19, // 19: proto.BFFService.UpdateFreeSpaces:output_type -> proto.UpdateFreeSpaces.Response
+	16, // 20: proto.BFFService.Delete:output_type -> proto.Delete.Response
+	17, // [17:21] is the sub-list for method output_type
+	13, // [13:17] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_server_proto_init() }
@@ -1132,7 +1355,7 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Upload_Request); i {
+			switch v := v.(*UpdateFreeSpaces); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1144,7 +1367,7 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Upload_Success); i {
+			switch v := v.(*Upload_Request); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1156,7 +1379,7 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Upload_Response); i {
+			switch v := v.(*Upload_Success); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1168,7 +1391,7 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Download_Request); i {
+			switch v := v.(*Upload_Response); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1180,7 +1403,7 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Download_Success); i {
+			switch v := v.(*Download_Request); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1192,7 +1415,7 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Download_Response); i {
+			switch v := v.(*Download_Success); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1204,7 +1427,7 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Delete_Request); i {
+			switch v := v.(*Download_Response); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1216,7 +1439,7 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Delete_Success); i {
+			switch v := v.(*Delete_Request); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1228,6 +1451,18 @@ func file_server_proto_init() {
 			}
 		}
 		file_server_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Delete_Success); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_server_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Delete_Response); i {
 			case 0:
 				return &v.state
@@ -1239,26 +1474,66 @@ func file_server_proto_init() {
 				return nil
 			}
 		}
+		file_server_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateFreeSpaces_Request); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_server_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateFreeSpaces_Success); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_server_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateFreeSpaces_Response); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
-	file_server_proto_msgTypes[6].OneofWrappers = []interface{}{
+	file_server_proto_msgTypes[7].OneofWrappers = []interface{}{
 		(*Upload_Request_Metadata)(nil),
 		(*Upload_Request_Chunk)(nil),
 	}
-	file_server_proto_msgTypes[8].OneofWrappers = []interface{}{
+	file_server_proto_msgTypes[9].OneofWrappers = []interface{}{
 		(*Upload_Response_Success)(nil),
 		(*Upload_Response_Error)(nil),
 	}
-	file_server_proto_msgTypes[10].OneofWrappers = []interface{}{
+	file_server_proto_msgTypes[11].OneofWrappers = []interface{}{
 		(*Download_Success_Metadata)(nil),
 		(*Download_Success_Chunk)(nil),
 	}
-	file_server_proto_msgTypes[11].OneofWrappers = []interface{}{
+	file_server_proto_msgTypes[12].OneofWrappers = []interface{}{
 		(*Download_Response_Success)(nil),
 		(*Download_Response_Error)(nil),
 	}
-	file_server_proto_msgTypes[14].OneofWrappers = []interface{}{
+	file_server_proto_msgTypes[15].OneofWrappers = []interface{}{
 		(*Delete_Response_Success)(nil),
 		(*Delete_Response_Error)(nil),
+	}
+	file_server_proto_msgTypes[18].OneofWrappers = []interface{}{
+		(*UpdateFreeSpaces_Response_Success)(nil),
+		(*UpdateFreeSpaces_Response_Error)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1266,7 +1541,7 @@ func file_server_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_server_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   15,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

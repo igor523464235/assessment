@@ -18,6 +18,7 @@ type grpcServer struct {
 	service service.Service
 }
 
+// TODO: describe errors in returns
 func NewServer(
 	service service.Service,
 ) proto.BFFServiceServer {
@@ -51,7 +52,6 @@ func (s *grpcServer) Upload(stream proto.BFFService_UploadServer) error {
 
 	// This is the channel into which we will stream the file to the service layer.
 	fileContent := make(chan []byte)
-	// defer close(fileContent)
 
 	var g errgroup.Group
 	var uuid uuid.UUID
@@ -158,6 +158,24 @@ func (s *grpcServer) Download(req *proto.Download_Request, stream proto.BFFServi
 
 End:
 	return nil
+}
+
+func (s *grpcServer) UpdateFreeSpaces(ctx context.Context, req *proto.UpdateFreeSpaces_Request) (*proto.UpdateFreeSpaces_Response, error) {
+	err := s.service.UpdateFreeSpaces(ctx)
+	if err != nil {
+		return &proto.UpdateFreeSpaces_Response{
+			Result: &proto.UpdateFreeSpaces_Response_Error{
+				Error: &proto.Error{
+					Error:        proto.BFFError_BFF_ERROR_UNKNOWN,
+					ErrorMessage: "updating free spaces error",
+				},
+			},
+		}, nil
+	}
+
+	return &proto.UpdateFreeSpaces_Response{
+		Result: &proto.UpdateFreeSpaces_Response_Success{Success: &proto.UpdateFreeSpaces_Success{}},
+	}, nil
 }
 
 // TODO: implement

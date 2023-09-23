@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	BFFService_Upload_FullMethodName   = "/proto.BFFService/Upload"
-	BFFService_Download_FullMethodName = "/proto.BFFService/Download"
-	BFFService_Delete_FullMethodName   = "/proto.BFFService/Delete"
+	BFFService_Upload_FullMethodName           = "/proto.BFFService/Upload"
+	BFFService_Download_FullMethodName         = "/proto.BFFService/Download"
+	BFFService_UpdateFreeSpaces_FullMethodName = "/proto.BFFService/UpdateFreeSpaces"
+	BFFService_Delete_FullMethodName           = "/proto.BFFService/Delete"
 )
 
 // BFFServiceClient is the client API for BFFService service.
@@ -30,6 +31,7 @@ const (
 type BFFServiceClient interface {
 	Upload(ctx context.Context, opts ...grpc.CallOption) (BFFService_UploadClient, error)
 	Download(ctx context.Context, in *Download_Request, opts ...grpc.CallOption) (BFFService_DownloadClient, error)
+	UpdateFreeSpaces(ctx context.Context, in *UpdateFreeSpaces_Request, opts ...grpc.CallOption) (*UpdateFreeSpaces_Response, error)
 	Delete(ctx context.Context, in *Delete_Request, opts ...grpc.CallOption) (*Delete_Response, error)
 }
 
@@ -107,6 +109,15 @@ func (x *bFFServiceDownloadClient) Recv() (*Download_Response, error) {
 	return m, nil
 }
 
+func (c *bFFServiceClient) UpdateFreeSpaces(ctx context.Context, in *UpdateFreeSpaces_Request, opts ...grpc.CallOption) (*UpdateFreeSpaces_Response, error) {
+	out := new(UpdateFreeSpaces_Response)
+	err := c.cc.Invoke(ctx, BFFService_UpdateFreeSpaces_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *bFFServiceClient) Delete(ctx context.Context, in *Delete_Request, opts ...grpc.CallOption) (*Delete_Response, error) {
 	out := new(Delete_Response)
 	err := c.cc.Invoke(ctx, BFFService_Delete_FullMethodName, in, out, opts...)
@@ -122,6 +133,7 @@ func (c *bFFServiceClient) Delete(ctx context.Context, in *Delete_Request, opts 
 type BFFServiceServer interface {
 	Upload(BFFService_UploadServer) error
 	Download(*Download_Request, BFFService_DownloadServer) error
+	UpdateFreeSpaces(context.Context, *UpdateFreeSpaces_Request) (*UpdateFreeSpaces_Response, error)
 	Delete(context.Context, *Delete_Request) (*Delete_Response, error)
 	mustEmbedUnimplementedBFFServiceServer()
 }
@@ -135,6 +147,9 @@ func (UnimplementedBFFServiceServer) Upload(BFFService_UploadServer) error {
 }
 func (UnimplementedBFFServiceServer) Download(*Download_Request, BFFService_DownloadServer) error {
 	return status.Errorf(codes.Unimplemented, "method Download not implemented")
+}
+func (UnimplementedBFFServiceServer) UpdateFreeSpaces(context.Context, *UpdateFreeSpaces_Request) (*UpdateFreeSpaces_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFreeSpaces not implemented")
 }
 func (UnimplementedBFFServiceServer) Delete(context.Context, *Delete_Request) (*Delete_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -199,6 +214,24 @@ func (x *bFFServiceDownloadServer) Send(m *Download_Response) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _BFFService_UpdateFreeSpaces_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFreeSpaces_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BFFServiceServer).UpdateFreeSpaces(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BFFService_UpdateFreeSpaces_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BFFServiceServer).UpdateFreeSpaces(ctx, req.(*UpdateFreeSpaces_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BFFService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Delete_Request)
 	if err := dec(in); err != nil {
@@ -224,6 +257,10 @@ var BFFService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.BFFService",
 	HandlerType: (*BFFServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "UpdateFreeSpaces",
+			Handler:    _BFFService_UpdateFreeSpaces_Handler,
+		},
 		{
 			MethodName: "Delete",
 			Handler:    _BFFService_Delete_Handler,
