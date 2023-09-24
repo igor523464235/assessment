@@ -17,18 +17,16 @@ func New(directory string) *ChunkStorage {
 	return &ChunkStorage{directory}
 }
 
-func (fs *ChunkStorage) Save(content <-chan []byte, chunkID uuid.UUID, part uint8) error {
+func (fs *ChunkStorage) Save(content <-chan []byte, chunkID uuid.UUID, part uint8) (err error) {
 	file, err := os.Create(fmt.Sprintf("%s/%s:%d", fs.directory, chunkID, part))
 	if err != nil {
 		return errors.Wrap(err, "create chunk file on disk")
 	}
 
-	defer func() error {
-		if err := file.Close(); err != nil {
-			return errors.Wrap(err, "close chunk file after saving on disk")
+	defer func() {
+		if cerr := file.Close(); cerr != nil && err == nil {
+			err = errors.Wrap(cerr, "close chunk file after saving on disk")
 		}
-
-		return nil
 	}()
 
 	for v := range content {
@@ -57,7 +55,12 @@ func (fs *ChunkStorage) Get(chunkID uuid.UUID, part uint8) (<-chan []byte, <-cha
 			errorChan <- err
 			return
 		}
-		defer file.Close()
+
+		defer func() {
+			if err := file.Close(); err != nil {
+				errorChan <- errors.Wrap(err, "close chunk file after saving on disk")
+			}
+		}()
 
 		// TODO: need to know optimal buffer size
 		for {

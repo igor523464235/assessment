@@ -47,7 +47,6 @@ func (s *Service) Upload(ctx context.Context, fileContent <-chan []byte, fileMet
 
 	for {
 		content, ok := <-fileContent
-
 		if !ok {
 			break
 		}

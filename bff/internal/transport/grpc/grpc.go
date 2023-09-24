@@ -53,31 +53,30 @@ func (s *grpcServer) Upload(stream proto.BFFService_UploadServer) error {
 	fileContent := make(chan []byte)
 
 	var g errgroup.Group
-	var uuid uuid.UUID
 
-	// Sending the channel to the service layer
+	// Streaming uploading file into the channel
 	g.Go(func() error {
 		var err error
-		uuid, err = s.service.Upload(stream.Context(), fileContent, metadata)
-		if err != nil {
-			return errors.Wrap(err, "upload file content")
+		defer close(fileContent)
+		for {
+			req, err = stream.Recv()
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				return err
+			}
+
+			fileContent <- req.GetChunk().GetContent()
 		}
 
 		return nil
 	})
 
-	// Streaming uploading file into the channel
-	for {
-		req, err = stream.Recv()
-		if err == io.EOF {
-			close(fileContent)
-			break
-		}
-		if err != nil {
-			return err
-		}
-
-		fileContent <- req.GetChunk().GetContent()
+	// Sending the channel to the service layer
+	uuid, err := s.service.Upload(stream.Context(), fileContent, metadata)
+	if err != nil {
+		return errors.Wrap(err, "upload file content")
 	}
 
 	// Waiting for the completion of the service layer Upload function

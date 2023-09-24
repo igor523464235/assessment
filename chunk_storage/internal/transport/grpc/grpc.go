@@ -42,25 +42,30 @@ func (s *grpcServer) Save(stream proto.StorageService_SaveServer) error {
 	var g errgroup.Group
 
 	g.Go(func() error {
-		err = s.storageService.Save(chunkContent, id, uint8(metadata.GetPart()))
-		if err != nil {
-			return errors.Wrap(err, "save to storage service")
+		for {
+			req, err = stream.Recv()
+			if err == io.EOF {
+				close(chunkContent)
+				break
+			}
+			if err != nil {
+				return errors.Wrap(err, "recieve chunk message to save file")
+			}
+
+			chunkContent <- req.GetChunk().GetContent()
 		}
 
 		return nil
 	})
 
-	for {
-		req, err = stream.Recv()
-		if err == io.EOF {
-			close(chunkContent)
-			break
-		}
-		if err != nil {
-			return errors.Wrap(err, "recieve chunk message to save file")
-		}
+	err = s.storageService.Save(chunkContent, id, uint8(metadata.GetPart()))
+	if err != nil {
+		return errors.Wrap(err, "save to storage service")
+	}
 
-		chunkContent <- req.GetChunk().GetContent()
+	// Waiting for the completion of the service layer Upload function
+	if err := g.Wait(); err != nil {
+		return err
 	}
 
 	return stream.SendAndClose(&proto.Save_Response{
