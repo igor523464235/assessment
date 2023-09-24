@@ -35,7 +35,10 @@ func main() {
 	hash1 := hasher1.Sum(nil)
 
 	// Return the pointer to the beginning of the file
-	file.Seek(0, 0)
+	_, err = file.Seek(0, 0)
+	if err != nil {
+		logger.Fatalf("seek to the beginning of the file: %v", err)
+	}
 
 	// Create connection to bff server
 	conn, err := grpc.Dial("localhost:8000", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())

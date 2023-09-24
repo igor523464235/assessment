@@ -18,7 +18,6 @@ type grpcServer struct {
 	service service.Service
 }
 
-// TODO: describe errors in returns
 func NewServer(
 	service service.Service,
 ) proto.BFFServiceServer {
@@ -42,7 +41,7 @@ func (s *grpcServer) Upload(stream proto.BFFService_UploadServer) error {
 
 	// Checking for bad data
 	if metadata.Name == "" || metadata.Size == 0 {
-		stream.SendAndClose(&proto.Upload_Response{
+		return stream.SendAndClose(&proto.Upload_Response{
 			Response: &proto.Upload_Response_Error{Error: &proto.Error{
 				Error:        proto.BFFError_BFF_ERROR_BAD_DATA,
 				ErrorMessage: fmt.Sprintf("name: %s, size: %d", metadata.Name, metadata.Size),
@@ -61,7 +60,7 @@ func (s *grpcServer) Upload(stream proto.BFFService_UploadServer) error {
 		var err error
 		uuid, err = s.service.Upload(stream.Context(), fileContent, metadata)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "upload file content")
 		}
 
 		return nil
@@ -78,15 +77,17 @@ func (s *grpcServer) Upload(stream proto.BFFService_UploadServer) error {
 			return err
 		}
 
-		chunk := req.GetChunk()
-		content := chunk.GetContent()
-
-		fileContent <- content
+		fileContent <- req.GetChunk().GetContent()
 	}
 
 	// Waiting for the completion of the service layer Upload function
 	if err := g.Wait(); err != nil {
-		return err
+		return stream.SendAndClose(&proto.Upload_Response{
+			Response: &proto.Upload_Response_Error{Error: &proto.Error{
+				Error:        proto.BFFError_BFF_ERROR_UNKNOWN,
+				ErrorMessage: fmt.Sprintf("name: %s, size: %d, %v", metadata.Name, metadata.Size, err),
+			}},
+		})
 	}
 
 	// Close the stream
@@ -103,13 +104,27 @@ func (s *grpcServer) Download(req *proto.Download_Request, stream proto.BFFServi
 	// Parse file id as uuid from request
 	fileID, err := uuid.Parse(req.GetId())
 	if err != nil {
-		return err
+		return stream.Send(&proto.Download_Response{
+			Response: &proto.Download_Response_Error{
+				Error: &proto.Error{
+					Error:        proto.BFFError_BFF_ERROR_BAD_DATA,
+					ErrorMessage: fmt.Sprintf("invalid file id: %s", req.GetId()),
+				},
+			},
+		})
 	}
 
 	// Download function returns two channels - with file content streaming and with errors
 	fileMetadata, fileContent, errorChan, err := s.service.Download(stream.Context(), fileID)
 	if err != nil {
-		return errors.Wrapf(err, "download file content, file id: %s", fileID)
+		return stream.Send(&proto.Download_Response{
+			Response: &proto.Download_Response_Error{
+				Error: &proto.Error{
+					Error:        proto.BFFError_BFF_ERROR_BAD_DATA,
+					ErrorMessage: fmt.Sprintf("download file content, file id: %s, err: %v", fileID, err),
+				},
+			},
+		})
 	}
 
 	// Sending first message to the client with metadata
@@ -133,7 +148,14 @@ func (s *grpcServer) Download(req *proto.Download_Request, stream proto.BFFServi
 		select {
 		case err, ok := <-errorChan:
 			if ok {
-				return err
+				return stream.Send(&proto.Download_Response{
+					Response: &proto.Download_Response_Error{
+						Error: &proto.Error{
+							Error:        proto.BFFError_BFF_ERROR_BAD_DATA,
+							ErrorMessage: fmt.Sprintf("download file content, file id: %s, err: %v", fileID, err),
+						},
+					},
+				})
 			}
 		case content, ok := <-fileContent:
 			if !ok {
