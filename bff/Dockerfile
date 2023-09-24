@@ -20,4 +20,4 @@ COPY ./bff/wait-for-it.sh /app/wait-for-it.sh
 
 RUN chmod +x /app/wait-for-it.sh
 
-ENTRYPOINT ["/app/myapp"]
+RUN apk add --no-cache bash

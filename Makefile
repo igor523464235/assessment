@@ -36,15 +36,16 @@ services:
     container_name: bff
     image: bff
     command: 
-      - "/app/wait-for-it.sh"
-      - "db:5432"
+      - /app/wait-for-it.sh
+      - db:5432
 endef
 
 export BEGINNING_OF_FILE
 
 define MIDDLE_OF_FILE
-      - "--"
-      - "/app/myapp"
+      - --strict
+      - --
+      - /app/myapp
     ports:
       - "8000:8000"
     depends_on:
@@ -80,7 +81,7 @@ build-docker-compose:
 	echo "$${BEGINNING_OF_FILE}" > $(DOCKER_COMPOSE_FILE); \
 
 	@for i in $(shell seq 1 $(STORAGES)); do \
-		echo "      - \"chunk_storage_NUM:8000\"" | sed "s/NUM/$$i/g" >> $(DOCKER_COMPOSE_FILE); \
+		echo "      - chunk_storage_NUM:8000" | sed "s/NUM/$$i/g" >> $(DOCKER_COMPOSE_FILE); \
 	done
 
 	echo "$${MIDDLE_OF_FILE}" >> $(DOCKER_COMPOSE_FILE); \
